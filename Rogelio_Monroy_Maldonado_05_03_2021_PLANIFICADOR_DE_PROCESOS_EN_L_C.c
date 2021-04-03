@@ -2,7 +2,6 @@
  #include<stdlib.h>
  static int n;
  int i,j,Tiempo_Total=0;
- float avgtat=0,avgwt=0;
  int quantum[];
  int tiempo=0,front=0,sig=0,q_cont=0,m=0,s=0;
  struct datos{
@@ -52,9 +51,9 @@
     Tiempo_Total=aa[i].at;
     Tiempo_Total+=aa[i].st;     
 	}
-finding(aa);
+Operaciones(aa);
 }
-void finding(struct datos a[]){
+void Operaciones(struct datos a[]){
 	int temp_st[n],flag=0,cont=0,proceso_p;
 	j=0;
 	int tq;
@@ -99,7 +98,7 @@ void finding(struct datos a[]){
 			check(a);
 			}
 		}
-		display(a);
+		Impresion(a);
 	}
 void push(int q){
 		quantum[sig++]=q;
@@ -117,14 +116,13 @@ void check(struct datos a[]){
 		q_cont++;
 		push(j++);
 	}}
-void display(struct datos a[]){
+void Impresion(struct datos a[]){
 	printf("Cambio de Contexto=%d \n",n);
 	for(i=0;i<n;i++){
 		a[i].tat=a[i].ct-a[i].at;
 		a[i].wt=a[i].tat-a[i].st;
 	}
-	avgtat=avgtat/n;
-	avgwt=avgwt/n;
+	
 	printf("\t\t\t\t-------------------\n");
 	printf("\t\t\t\tTabla de resultados\n");
 	printf("\t\t\t\t-------------------\n");
