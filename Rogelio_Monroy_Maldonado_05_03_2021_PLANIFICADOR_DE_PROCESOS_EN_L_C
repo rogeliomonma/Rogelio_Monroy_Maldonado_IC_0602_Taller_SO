@@ -1,0 +1,137 @@
+ #include<stdio.h>
+ #include<stdlib.h>
+ static int n;
+ int i,j,Tiempo_Total=0;
+ float avgtat=0,avgwt=0;
+ int quantum[];
+ int tiempo=0,front=0,sig=0,q_cont=0,m=0,s=0;
+ struct datos{
+ 	int at,st,ct,tat,wt;
+ 	char nombreproc[20];
+ 	float ntat;
+ }temp; 
+ int main(){
+ 	system ("cls");
+ 	printf ("\n\t\t CARRERA:Ingenieria en Sistemas Computacionales");
+	printf ("\n\t\t NOMBRE DEL PROGRAMA:Planificador de Procesos con algoritmo Round Robin");
+	printf ("\n\t\t ELAVORO:ROGELIOMONROY MALDONADO ");
+	printf ("\n\t\t FECHA:05/03/2021 ");
+	printf ("\n");
+	system ("pause");
+	system ("cls");
+ 	printf("\t\t\t--------------------------------------\n");
+ 	printf("\t\t\tAlgoritmo de Planificacion Round Robin\n");
+ 	printf("\t\t\t--------------------------------------\n");
+ 	printf("1.Ingrese el numero de procesos:");
+	scanf("%d",&n);
+	struct datos aa[n];
+ 	for(i=0;i<n;i++){
+		 printf("\t\t*Ingrese el nombre del proceso,Tiempo de llegada,Tiempo de ejecucion-->[%d]:\n",i);
+		 scanf("\t\t%s",&aa[i].nombreproc);
+		 scanf("\t\t%d%d",&aa[i].at,&aa[i].st);
+    }
+    for(i=0;i<n;i++){
+    	for(j=i;j>=1;j--){
+        if(aa[j].at<aa[j-1].at){
+        	temp=aa[j-1];
+			aa[j-1]=aa[j];
+			aa[j]=temp;
+		}
+		else if(aa[j].at==aa[j-1].at){
+			if(aa [j].st<aa[j-1].st){
+			temp=aa[j-1]; 
+            aa[j-1]=aa[j];
+            aa[j]=temp;
+			}
+        }
+		}
+   }
+   Tiempo_Total+=aa[0].at+aa[0].st;
+   for(i=1;i<n;i++){
+   	if(aa[i].at>Tiempo_Total)
+    Tiempo_Total=aa[i].at;
+    Tiempo_Total+=aa[i].st;     
+	}
+finding(aa);
+}
+void finding(struct datos a[]){
+	int temp_st[n],flag=0,cont=0,proceso_p;
+	j=0;
+	int tq;
+	printf("Ingresa numero de quantum:");
+	scanf("%d",&tq);
+	for(i=0;i<n;i++){
+		temp_st[i]=a[i].st;
+	}
+	tiempo=a[0].at;
+	q_cont=1;
+	push(j++);
+	while(tiempo<=Tiempo_Total){
+		if(flag==1||q_cont!=0){
+		
+		if(flag==0 && cont==0){
+			proceso_p=pop();
+			cont=0;
+			flag=1;
+		}
+		temp_st[proceso_p]--;
+		if(temp_st[proceso_p]==0){
+			tiempo++;
+			cont=0;
+			a[proceso_p].ct=tiempo;
+			flag=0;
+			q_cont--;
+			check(a);
+			continue;
+			}
+			cont++;
+			if (cont==tq){
+			cont=0;
+			tiempo++;
+			check(a);
+			push(proceso_p);
+			flag=0;
+			}else{
+			tiempo++;
+			check(a); }
+			}else{
+			tiempo++;
+			check(a);
+			}
+		}
+		display(a);
+	}
+void push(int q){
+		quantum[sig++]=q;
+		m++;
+	}
+int pop(){
+	s++;
+	int x;
+	x=quantum[front++];
+	return x;
+}
+void check(struct datos a[]){
+	
+	while(a[j].at<=tiempo && j<n){
+		q_cont++;
+		push(j++);
+	}}
+void display(struct datos a[]){
+	printf("Cambio de Contexto=%d \n",n);
+	for(i=0;i<n;i++){
+		a[i].tat=a[i].ct-a[i].at;
+		a[i].wt=a[i].tat-a[i].st;
+	}
+	avgtat=avgtat/n;
+	avgwt=avgwt/n;
+	printf("\t\t\t\t-------------------\n");
+	printf("\t\t\t\tTabla de resultados\n");
+	printf("\t\t\t\t-------------------\n");
+	printf("Nombre\tT.Llegada\tT.Ejecucion\tT.Final\tT.Respuesta\tT.Espera\n");
+	for(i=0;i<n;i++){
+	printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\n",a[i].nombreproc,a[i].at,a[i].st,a[i].ct,a[i].tat,a[i].wt);
+	
+}
+
+}
