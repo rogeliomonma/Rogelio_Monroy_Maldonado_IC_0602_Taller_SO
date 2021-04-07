@@ -1,13 +1,16 @@
- #include<stdio.h>
+  #include<stdio.h>
  #include<stdlib.h>
  static int n;
  int i,j,Tiempo_Total=0;
+ //i j Valirables para moverse entre posiciones del arreglo.
+ //Tiempo_Total Variable que acomulara el tiempo total de la ejecución.
  int quantum[];
  int tiempo=0,front=0,sig=0,q_cont=0,m=0,s=0;
  struct datos{
- 	int at,st,ct,tat,wt;
+ 	int TLL,TEJ,TF,TR,TE;
+ 	//at=T.Llegada st=T.Ejecucion ct=T.Final tat=T.Respuesta wt=T.Espera
  	char nombreproc[20];
- 	float ntat;
+ 	//nombreproce variable para acomular el nombre de cada proceso.
  }temp; 
  int main(){
  	system ("cls");
@@ -27,17 +30,17 @@
  	for(i=0;i<n;i++){
 		 printf("\t\t*Ingrese el nombre del proceso,Tiempo de llegada,Tiempo de ejecucion-->[%d]:\n",i);
 		 scanf("\t\t%s",&aa[i].nombreproc);
-		 scanf("\t\t%d%d",&aa[i].at,&aa[i].st);
+		 scanf("\t\t%d%d",&aa[i].TLL,&aa[i].TEJ);
     }
     for(i=0;i<n;i++){
     	for(j=i;j>=1;j--){
-        if(aa[j].at<aa[j-1].at){
+        if(aa[j].TLL<aa[j-1].TLL){
         	temp=aa[j-1];
 			aa[j-1]=aa[j];
 			aa[j]=temp;
 		}
-		else if(aa[j].at==aa[j-1].at){
-			if(aa [j].st<aa[j-1].st){
+		else if(aa[j].TLL==aa[j-1].TLL){
+			if(aa [j].TEJ<aa[j-1].TEJ){
 			temp=aa[j-1]; 
             aa[j-1]=aa[j];
             aa[j]=temp;
@@ -45,11 +48,11 @@
         }
 		}
    }
-   Tiempo_Total+=aa[0].at+aa[0].st;
+   Tiempo_Total+=aa[0].TLL+aa[0].TEJ;
    for(i=1;i<n;i++){
-   	if(aa[i].at>Tiempo_Total)
-    Tiempo_Total=aa[i].at;
-    Tiempo_Total+=aa[i].st;     
+   	if(aa[i].TLL>Tiempo_Total)
+    Tiempo_Total=aa[i].TLL;
+    Tiempo_Total+=aa[i].TEJ;     
 	}
 Operaciones(aa);
 }
@@ -60,9 +63,9 @@ void Operaciones(struct datos a[]){
 	printf("Ingresa numero de quantum:");
 	scanf("%d",&tq);
 	for(i=0;i<n;i++){
-		temp_st[i]=a[i].st;
+		temp_st[i]=a[i].TEJ;
 	}
-	tiempo=a[0].at;
+	tiempo=a[0].TLL;
 	q_cont=1;
 	push(j++);
 	while(tiempo<=Tiempo_Total){
@@ -77,7 +80,7 @@ void Operaciones(struct datos a[]){
 		if(temp_st[proceso_p]==0){
 			tiempo++;
 			cont=0;
-			a[proceso_p].ct=tiempo;
+			a[proceso_p].TF=tiempo;
 			flag=0;
 			q_cont--;
 			check(a);
@@ -112,15 +115,15 @@ int pop(){
 }
 void check(struct datos a[]){
 	
-	while(a[j].at<=tiempo && j<n){
+	while(a[j].TLL<=tiempo && j<n){
 		q_cont++;
 		push(j++);
 	}}
 void Impresion(struct datos a[]){
 	printf("Cambio de Contexto=%d \n",n);
 	for(i=0;i<n;i++){
-		a[i].tat=a[i].ct-a[i].at;
-		a[i].wt=a[i].tat-a[i].st;
+		a[i].TR=a[i].TF-a[i].TLL;
+		a[i].TE=a[i].TR-a[i].TEJ;
 	}
 	
 	printf("\t\t\t\t-------------------\n");
@@ -128,7 +131,7 @@ void Impresion(struct datos a[]){
 	printf("\t\t\t\t-------------------\n");
 	printf("Nombre\tT.Llegada\tT.Ejecucion\tT.Final\tT.Respuesta\tT.Espera\n");
 	for(i=0;i<n;i++){
-	printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\n",a[i].nombreproc,a[i].at,a[i].st,a[i].ct,a[i].tat,a[i].wt);
+	printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\n",a[i].nombreproc,a[i].TLL,a[i].TEJ,a[i].TF,a[i].TR,a[i].TE);
 	
 }
 
